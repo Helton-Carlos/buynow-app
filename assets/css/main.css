@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.input {
+  @apply w-full bg-gray-light px-1 py-2 my-1 rounded-md shadow border-none;
+}
+
+.btn-primary {
+  @apply w-full mt-2 flex justify-center bg-purple text-white gap-2 px-2 py-3 rounded-full
+}
+
+.btn-negative {
+  @apply w-full mt-2 flex justify-center bg-gray-light text-purple gap-2 px-2 py-3 rounded-full
+    hover:bg-gray hover:text-white
+}
+
+.btn-positive {
+  @apply w-full mt-2 flex justify-center bg-green text-purple gap-2 px-2 py-3 rounded-full
+   hover:bg-purple hover:text-white
+}
