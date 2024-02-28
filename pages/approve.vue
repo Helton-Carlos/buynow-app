@@ -1,51 +1,62 @@
-<script setup lg="ts">
-import add from '/icons/add.svg';
-import products from '/icons/products.svg';
-import approve from '/icons/approve.svg';
-import config from '/icons/config.svg';
+<script setup lang="ts">
+import geladeira from '/icons/geladeira.png';
 
-import { useRouter } from 'vue-router';
+const search = ref<string>('');
+const selected = ref<string>('');
+const total = ref<string>('2,500.22');
 
-const router = useRouter();
 
-const infoBox = [
+const products = [
   {
-    icon: add,
-    title: 'Adicionar Produtos',
-    path: 'add-products'
+    image: geladeira,
+    title: 'Geladeira Frost Free Brastemp',
+    sector: 'cozinha',
+    amount: 1
   },
   {
-    icon: products,
-    title: 'Produtos Cadastrados',
-    path: 'products-registered'
-  },
-  {
-    icon: approve,
-    title: 'Aprovados',
-    path: 'approve'
-  },
-  {
-    icon: config,
-    title: 'Configurar',
-    path: 'config'
-  },
+    image: geladeira,
+    title: 'Geladeira Frost Free Brastemp',
+    sector: 'cozinha',
+    amount: 1
+  }
 ]
-
-function getRouter(name) {
-  router.push({name})
-}
-
 </script>
 
 <template>
-  <div>
-    <div class="w-[350px] flex justify-center mx-auto flex-wrap gap-5">
-      <box 
-        v-for="(box, title) in infoBox" 
-        :key="title"
-        :icon= "box.icon"
-        :title="box.title"
-        @getRouter="getRouter(box.path)"
+  <div class="mx-auto max-w-[450px]">
+    <input 
+      class="input"
+      type="text" 
+      name="search" 
+      id="search"
+      placeholder="Pesquisar"
+      v-model="search"
+    />
+
+    <select
+     class="input"
+     v-model="selected"
+    >
+      <option>A</option>
+      <option>B</option>
+      <option>C</option>
+    </select>
+
+    <p class="font-bold text-base pb-4">
+      Provados:
+    </p>
+
+    <div>
+      <p class="font-bold text-purple">
+        $ {{ total }}
+      </p>
+      <card
+        v-for="(product, index) in products" 
+        :key="index"
+        :image= "product.image"
+        :title= "product.title"
+        :sector="product.sector"
+        :amount="product.amount"
       />
     </div>
   </div>

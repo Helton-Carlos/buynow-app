@@ -1,4 +1,4 @@
-<script setup lg="ts">
+<script setup lang="ts">
 import camera from '/icons/camera.svg';
 //import audio from '/icons/audio.svg';
 

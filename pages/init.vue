@@ -1,4 +1,4 @@
-<script setup lg="ts">
+<script setup lang="ts">
 import add from '/icons/add.svg';
 import products from '/icons/products.svg';
 import approve from '/icons/approve.svg';

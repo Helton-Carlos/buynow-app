@@ -1,52 +1,48 @@
-<script setup lg="ts">
-import add from '/icons/add.svg';
-import products from '/icons/products.svg';
-import approve from '/icons/approve.svg';
-import config from '/icons/config.svg';
+<script setup lang="ts">
+import { useStatusStore } from '~/store/index';
 
-import { useRouter } from 'vue-router';
+const add = ref<string>('');
 
-const router = useRouter();
-
-const infoBox = [
-  {
-    icon: add,
-    title: 'Adicionar Produtos',
-    path: 'add-products'
-  },
-  {
-    icon: products,
-    title: 'Produtos Cadastrados',
-    path: 'products-registered'
-  },
-  {
-    icon: approve,
-    title: 'Aprovados',
-    path: 'approve'
-  },
-  {
-    icon: config,
-    title: 'Configurar',
-    path: 'config'
-  },
-]
-
-function getRouter(name) {
-  router.push({name})
-}
-
+const { $state, getSectors } = useStatusStore();
 </script>
 
 <template>
-  <div>
-    <div class="w-[350px] flex justify-center mx-auto flex-wrap gap-5">
-      <box 
-        v-for="(box, title) in infoBox" 
-        :key="title"
-        :icon= "box.icon"
-        :title="box.title"
-        @getRouter="getRouter(box.path)"
+  <div class="mx-auto max-w-[450px]">
+    <form 
+      class="my-4"
+      @submit.prevent="getSectors(add)"
+    >
+      <input 
+        class="input"
+        type="text" 
+        name="add" 
+        id="add"
+        placeholder="Adicione o setor"
+        v-model="add"
       />
+
+      <button class="btn-positive font-bold">
+       + Adicionar
+      </button>
+    </form>
+
+    <p class="font-bold text-base pb-4">
+      Setores:
+    </p>
+
+    <div 
+      class="flex items-center"
+      v-for="check in $state.sectors" 
+      :key="check"
+    >
+      <p 
+        class="pl-1 font-bold capitalize"
+        :for="check" 
+      >
+       - {{ check }}
+      </p>
+
+      <hr />
     </div>
   </div>
 </template>
