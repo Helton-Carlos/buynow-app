@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import iconAprovar from '/icons/aprovar.svg';
+import iconReprovar from '/icons/reprovar.svg';
 import { useStatusStore } from '~/store/index';
 
 const add = ref<string>('');
@@ -12,14 +14,31 @@ const { $state, getSectors } = useStatusStore();
       class="my-4"
       @submit.prevent="getSectors(add)"
     >
-      <input 
-        class="input"
-        type="text" 
-        name="add" 
-        id="add"
-        placeholder="Adicione o setor"
-        v-model="add"
-      />
+
+      <div class="flex justify-end items-center relative">
+        <img 
+          v-if="true"
+          class="absolute mr-2 w-4" 
+          :src="iconAprovar" 
+          alt="add aprovar" 
+        />
+
+        <img 
+          v-else
+          class="absolute mr-2 w-4" 
+          :src="iconReprovar" 
+          alt="add reprovar" 
+        />
+
+        <input 
+          class="input"
+          type="text" 
+          name="add" 
+          id="add"
+          placeholder="Adicione o setor"
+          v-model="add"
+        />
+      </div>
 
       <button class="btn-positive font-bold">
        + Adicionar
@@ -41,8 +60,6 @@ const { $state, getSectors } = useStatusStore();
       >
        - {{ check }}
       </p>
-
-      <hr />
     </div>
   </div>
 </template>

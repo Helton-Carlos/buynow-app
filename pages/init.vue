@@ -31,7 +31,7 @@ const infoBox = [
   },
 ]
 
-function getRouter(name) {
+function getRouter(name: string) {
   router.push({name})
 }
 </script>

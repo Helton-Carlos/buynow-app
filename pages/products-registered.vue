@@ -1,13 +1,10 @@
 <script setup lang="ts">
+import iconSearch from '/icons/search.svg';
 import geladeira from '/icons/geladeira.png';
 import { useStatusStore } from '~/store/index';
 
-
-import { useRouter } from 'vue-router';
-
 const { $state } = useStatusStore();
 
-const router = useRouter();
 const search = ref<string>('');
 const sectors = ref<string>('');
 
@@ -29,23 +26,30 @@ const products = [
 
 <template>
   <div class="mx-auto max-w-[450px]">
-    <input 
-      class="input"
-      type="text" 
-      name="search" 
-      id="search"
-      placeholder="Pesquisar"
-      v-model="search"
-    />
+    <div class="flex justify-end items-center relative">
+      <img 
+        class="absolute mr-2 w-4" 
+        :src="iconSearch" 
+        alt="Search Icon" 
+      />
 
-    {{ $state }}
+      <input 
+        class="input px-2"
+        type="text" 
+        name="search" 
+        id="search"
+        placeholder="Pesquisar"
+        v-model="search"
+      />
+    </div>
 
     <div>  
       <select
-        class="input"
+        class="input capitalize"
         v-model="sectors"
       >
         <option 
+          class="capitalize"
           v-for="check in $state.sectors" 
           :key="check"
         >
@@ -53,7 +57,6 @@ const products = [
         </option>
       </select>
     </div>
-  
 
     <p class="font-bold text-base pb-4">
       Produtos cadastrados:
