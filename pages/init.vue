@@ -12,40 +12,44 @@ const infoBox = [
   {
     icon: add,
     title: 'Adicionar Produtos',
-    path: 'add-products'
+    path: 'add-products',
   },
   {
     icon: products,
     title: 'Produtos Cadastrados',
-    path: 'products-registered'
+    path: 'products-registered',
   },
   {
     icon: approve,
     title: 'Aprovados',
-    path: 'approve'
+    path: 'approve',
   },
   {
     icon: config,
     title: 'Configurar',
-    path: 'config'
+    path: 'config',
   },
-]
+];
 
 function getRouter(name: string) {
-  router.push({name})
+  router.push({ name });
 }
 </script>
 
 <template>
   <div>
     <div class="w-[350px] flex justify-center mx-auto flex-wrap gap-5">
-      <box 
-        v-for="(box, title) in infoBox" 
+      <box
+        v-for="(box, title) in infoBox"
         :key="title"
-        :icon= "box.icon"
+        :icon="box.icon"
         :title="box.title"
         @getRouter="getRouter(box.path)"
       />
     </div>
+
+    <p class="text-center font-bold text-purple">
+      {{ $pwa?.isPWAInstalled }}
+    </p>
   </div>
 </template>

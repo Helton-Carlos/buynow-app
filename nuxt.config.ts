@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
-const sw = process.env.SW === 'true';
+const sw = process.env.SW === 'true'
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -9,6 +9,29 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vite-pwa/nuxt'
   ],
+  experimental: {
+    payloadExtraction: true,
+    watcher: 'parcel',
+  },
+  nitro: {
+    esbuild: {
+      options: {
+        target: 'esnext',
+      },
+    },
+    prerender: {
+      routes: ['/', '/index','/init', '/config', '/products-registered', '/approve', 'add-products'],
+    },
+  },
+  imports: {
+    autoImport: true,
+  },
+  appConfig: {
+    buildDate: new Date().toISOString(),
+  },
+  vite: {
+    logLevel: 'info',
+  },
   pwa: {
     strategies: sw ? 'injectManifest' : 'generateSW',
     srcDir: sw ? 'service-worker' : undefined,
@@ -50,6 +73,22 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
+      runtimeCaching: [
+        {
+          urlPattern: '/',
+          handler: 'CacheFirst',
+          options: {
+            cacheName: 'google-fonts-cache',
+            expiration: {
+              maxEntries: 10,
+              maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
+            },
+            cacheableResponse: {
+              statuses: [0, 200]
+            }
+          }
+        }
+      ]
     },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],

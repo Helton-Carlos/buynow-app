@@ -5,12 +5,16 @@ import { clientsClaim } from 'workbox-core'
 import { NavigationRoute, registerRoute } from 'workbox-routing'
 
 declare let self: ServiceWorkerGlobalScope
+console.log(self.__WB_MANIFEST);
 
 precacheAndRoute(self.__WB_MANIFEST)
 
 cleanupOutdatedCaches()
 
 let allowlist: undefined | RegExp[]
+
+console.log(allowlist);
+
 if (import.meta.env.DEV)
   allowlist = [/^\/$/]
 
