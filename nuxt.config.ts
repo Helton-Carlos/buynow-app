@@ -20,7 +20,7 @@ export default defineNuxtConfig({
       },
     },
     prerender: {
-      routes: ['/', '/index','/init', '/config', '/products-registered', '/approve', 'add-products'],
+      routes: ['/','/init', '/config', '/products-registered', '/approve'],
     },
   },
   imports: {
@@ -73,22 +73,6 @@ export default defineNuxtConfig({
     },
     workbox: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
-      runtimeCaching: [
-        {
-          urlPattern: '/',
-          handler: 'CacheFirst',
-          options: {
-            cacheName: 'google-fonts-cache',
-            expiration: {
-              maxEntries: 10,
-              maxAgeSeconds: 60 * 60 * 24 * 365 // <== 365 days
-            },
-            cacheableResponse: {
-              statuses: [0, 200]
-            }
-          }
-        }
-      ]
     },
     injectManifest: {
       globPatterns: ['**/*.{js,css,html,png,svg,ico}'],
