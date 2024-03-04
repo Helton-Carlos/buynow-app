@@ -2,6 +2,14 @@ import { defineNuxtConfig } from 'nuxt/config'
 const sw = process.env.SW === 'true';
 
 export default defineNuxtConfig({
+  app: {
+    head: {
+      htmlAttrs: { dir: 'ltr', lang: 'pt' },
+      link: [{ rel: 'icon', type: 'image/png', href: "/manifest/favicon-16x16.png" }],
+      charset: 'utf-8',
+      viewport: 'width=device-width, initial-scale=1',
+    },
+  },
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   modules: [
