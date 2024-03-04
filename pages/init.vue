@@ -47,9 +47,5 @@ function getRouter(name: string) {
         @getRouter="getRouter(box.path)"
       />
     </div>
-
-    <p class="text-center font-bold text-purple">
-      {{ $pwa?.isPWAInstalled }}
-    </p>
   </div>
 </template>
