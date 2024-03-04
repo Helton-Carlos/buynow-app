@@ -45,9 +45,10 @@ const products = [
 
     <div>  
       <select
-        class="input capitalize"
+        class="input"
         v-model="sectors"
       >
+        <option disabled value="">Escolha um setor</option>
         <option 
           class="capitalize"
           v-for="check in $state.sectors" 

@@ -33,7 +33,7 @@ function back() {
     </div>
 
     <NuxtPwaManifest />
-    <NuxtLoadingIndicator />
+      <NuxtLoadingIndicator />
     <NuxtPage />
   </div>
 </template>

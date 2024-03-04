@@ -28,7 +28,7 @@ export default defineNuxtConfig({
       },
     },
     prerender: {
-      routes: ['/','/init', '/config', '/products-registered', '/approve'],
+      routes: ['/', '/init', '/config', '/products-registered', '/approve'],
     },
   },
   imports: {

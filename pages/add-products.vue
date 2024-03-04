@@ -1,17 +1,50 @@
 <script setup lang="ts">
 import camera from '/icons/camera.svg';
-
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
+const player: Ref<HTMLCanvasElement | undefined> = ref();
+const canvas: Ref<HTMLCanvasElement | undefined> = ref();
+
+const cameraOn = ref<boolean>(true);
+const openPlayer = ref<boolean>(true);
 
 function back() {
   router.push({ name:"init" })
 }
 
-function test() {
+function onSubmit() {
   alert('hey')
 }
+
+function openCamera() {
+  openPlayer.value = true; 
+
+  navigator.mediaDevices
+    .getUserMedia({ video: true, audio: false })
+    .then(localMediaStream => {
+      player.value.srcObject = localMediaStream;
+      player.value?.play();
+
+      cameraOn.value = false;
+    })
+    .catch(err => {
+      console.error( err);
+    });
+}
+
+
+function takePhoto() {
+  canvas.value?.getContext("2d")?.drawImage(player.value, 0, 0, 340, 250);
+
+  canvas.value?.toDataURL("image/png");   
+
+  openPlayer.value = false;
+  cameraOn.value = true;
+}
+
+
 </script>
 
 <template>
@@ -20,7 +53,7 @@ function test() {
       Adicionar produtos:
     </p>
 
-    <div @submit="test">
+    <div @submit="onSubmit">
       <label
        class="text-sm pb-2"
        for="nome"
@@ -66,7 +99,6 @@ function test() {
         placeholder="ex: 2.599,30"
       />
 
-
       <label
        class="text-sm pb-2"
        for="link"
@@ -83,7 +115,9 @@ function test() {
       />
 
       <button 
+        v-if="cameraOn"
         class="btn-primary"
+        @click="openCamera"
       >
         <img 
           :src="camera"
@@ -92,6 +126,32 @@ function test() {
           Câmera
       </button>
 
+      <video 
+        v-if="openPlayer"
+        class="my-2 rounded-lg"
+        ref="player"  
+      />
+    
+      <button 
+        v-if="!cameraOn"
+        class="btn-primary"
+        @click="takePhoto"
+      >
+        <img 
+          :src="camera"
+          alt="câmera"
+        />
+          Bater
+      </button>
+
+      <canvas 
+        ref="canvas" 
+        id="canvas" 
+        class="my-2 rounded-lg"
+        width="400" 
+        height="300" 
+      />
+
       <hr class="my-8 text-gray"/>
 
       <div class="flex gap-2">
@@ -99,7 +159,7 @@ function test() {
           Cancelar
         </button>
 
-        <button class="btn-positive" @click="test">
+        <button class="btn-positive" @click="onSubmit">
           Salvar
         </button>
       </div>

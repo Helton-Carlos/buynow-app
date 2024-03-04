@@ -7,7 +7,7 @@ html {
 }
 
 .input {
-  @apply w-full bg-gray-light px-1 py-2 my-1 rounded-md shadow border-none;
+  @apply w-full bg-gray-light px-1 py-2 my-2 rounded-md shadow border-none outline-none;
 }
 
 .btn-primary {
