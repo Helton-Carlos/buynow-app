@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  font-family: 'Urbanist', sans-serif; 
+}
+
 .input {
   @apply w-full bg-gray-light px-1 py-2 my-1 rounded-md shadow border-none;
 }
