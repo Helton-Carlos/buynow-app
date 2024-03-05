@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import iconSearch from '/icons/search.svg';
 import geladeira from '/icons/geladeira.png';
-import { useStatusStore } from '~/store/index';
+import { useStatusStore } from '~/stores/sectors';
 
 const { $state } = useStatusStore();
 

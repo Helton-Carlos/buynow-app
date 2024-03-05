@@ -1,18 +1,18 @@
 <script setup lang="ts">
 import iconAprovar from '/icons/aprovar.svg';
 import iconReprovar from '/icons/reprovar.svg';
-import { useStatusStore } from '~/store/index';
+import { useStatusStore } from '~/stores/sectors';
 
 const add = ref<string>('');
 
-const { $state, getSectors } = useStatusStore();
+const { $state, addIndexedDBSectors } = useStatusStore();
 </script>
 
 <template>
   <div class="mx-auto max-w-[450px]">
     <form 
       class="my-4"
-      @submit.prevent="getSectors(add)"
+      @submit.prevent="addIndexedDBSectors(add)"
     >
 
       <div class="flex justify-end items-center relative">
