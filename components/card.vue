@@ -4,6 +4,7 @@ defineProps<{
   title: string;
   sector: string;
   amount: number;
+  price: number
 }>();
 
 defineEmits<(e:'getProduct') => void>();
@@ -18,14 +19,15 @@ defineEmits<(e:'getProduct') => void>();
     />
 
     <div class="w-[205px] text-left font-bold text-base">
-     <p class="text-base">{{ title }}</p> 
+     <p class="text-base">
+      {{ title }}
+     </p> 
     
      <div>
       <span class="text-sm">Setor: </span>
       <span class="text-sm capitalize">{{ sector }}</span>
      </div>
     </div>
-
 
     <span class="w-[105px] text-center font-bold text-xl pt-1">
       {{ amount }}x

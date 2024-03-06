@@ -2,6 +2,10 @@
 import iconSearch from '/icons/search.svg';
 import { useStatusStore } from '~/stores/sectors';
 import { useProductsStore } from '~/stores/products';
+import { useRouter, useRoute } from 'vue-router';
+
+const router = useRouter();
+const route = useRoute();
 
 const { validationIndexedDBsectors } = useStatusStore();
 const { validationIndexedDBProducts } = useProductsStore();
@@ -15,6 +19,10 @@ function getSearch() {
   return title.filter((item: string) =>
     item.toLowerCase().includes(search.value.toLowerCase()),
   );
+}
+
+function pageProducts(title: string) {
+  navigateTo('/products-registered/'+ title)
 }
 
 const getProducts = computed<any>(() => {
@@ -71,6 +79,8 @@ const getProducts = computed<any>(() => {
         :title= "product.title"
         :sector="product.sector"
         :amount="product.amount"
+        :price="product.price"
+        @getProduct="pageProducts(product.title)"
       />
     </div>
   </div>

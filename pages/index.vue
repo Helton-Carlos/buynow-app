@@ -7,7 +7,7 @@ const router = useRouter();
 onMounted(()=>{
   setTimeout(() => {
     router.push({ name: 'init'})
-  }, 4000);
+  }, 5000);
 })
 </script>
 

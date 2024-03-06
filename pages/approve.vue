@@ -76,6 +76,7 @@ const getProducts = computed<any>(() => {
         :title= "product.title"
         :sector="product.sector"
         :amount="product.amount"
+        :price="product.price"
       />
     </div>
   </div>

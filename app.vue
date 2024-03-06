@@ -10,7 +10,7 @@ function back() {
 </script>
 
 <template>
-  <div>
+  <div class="px-2">
     <div
       v-if="!(route.name === 'index')"
       class="flex justify-center text-center"
@@ -18,7 +18,7 @@ function back() {
       <div>
         <h2
           @click="back"
-          class="font-bold text-xl my-4 md:text-2xl cursor-pointer"
+          class="font-bold text-2xl my-4 cursor-pointer"
         >
           BUY<span class="text-purple">NOW</span>
         </h2>

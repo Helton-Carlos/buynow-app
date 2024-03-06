@@ -9,7 +9,7 @@ const router = useRouter();
 const { addIndexedDBProduct } =  useProductsStore();
 const { validationIndexedDBsectors } = useStatusStore();
 
-const player: Ref<HTMLCanvasElement | undefined> = ref();
+const player: Ref<HTMLCanvasElement | any> = ref();
 const canvas: Ref<HTMLCanvasElement | undefined> = ref();
 
 const cameraOn = ref<boolean>(true);
