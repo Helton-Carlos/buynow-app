@@ -3,16 +3,21 @@ import iconAprovar from '/icons/aprovar.svg';
 import iconReprovar from '/icons/reprovar.svg';
 import { useStatusStore } from '~/stores/sectors';
 
-const add = ref<string>('');
+const add = ref<string[]>([]);
 
 const { $state, addIndexedDBSectors } = useStatusStore();
+
+function addSectors() {
+  addIndexedDBSectors(add.value);
+  add.value = []
+}
 </script>
 
 <template>
   <div class="mx-auto max-w-[450px]">
     <form 
       class="my-4"
-      @submit.prevent="addIndexedDBSectors(add)"
+      @submit.prevent="addSectors"
     >
 
       <div class="flex justify-end items-center relative">

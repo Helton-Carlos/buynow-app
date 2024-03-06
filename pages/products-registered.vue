@@ -2,26 +2,13 @@
 import iconSearch from '/icons/search.svg';
 import geladeira from '/icons/geladeira.png';
 import { useStatusStore } from '~/stores/sectors';
+import { useProductsStore } from '~/stores/products';
 
-const { $state } = useStatusStore();
+const { validationIndexedDBsectors } = useStatusStore();
+const { validationIndexedDBProducts } = useProductsStore();
 
 const search = ref<string>('');
 const sectors = ref<string>('');
-
-const products = [
-  {
-    image: geladeira,
-    title: 'Geladeira Frost Free Brastemp',
-    sector: 'cozinha',
-    amount: 1
-  },
-  {
-    image: geladeira,
-    title: 'Geladeira Frost Free Brastemp',
-    sector: 'cozinha',
-    amount: 1
-  }
-]
 </script>
 
 <template>
@@ -51,7 +38,7 @@ const products = [
         <option disabled value="">Escolha um setor</option>
         <option 
           class="capitalize"
-          v-for="check in $state.sectors" 
+          v-for="check in validationIndexedDBsectors()" 
           :key="check"
         >
           {{ check }}
@@ -65,7 +52,7 @@ const products = [
 
     <div>
       <card
-        v-for="(product, index) in products" 
+        v-for="(product, index) in validationIndexedDBProducts()" 
         :key="index"
         :image= "product.image"
         :title= "product.title"

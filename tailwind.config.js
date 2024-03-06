@@ -12,11 +12,12 @@ export default {
     colors: {
       'black': '#212121',
       'purple': '#8C32FF',
+      'purple-light': '#E0C9FF',
       'gray': '#929292',
+      'gray-light': '#F5F5F5',
       'green': '#07E78F',
       'red': '#E60000',
       'white': '#FFFFFF',
-      'gray-light': '#F5F5F5',
     },
     fontSize: {
       sm: '0.75rem',

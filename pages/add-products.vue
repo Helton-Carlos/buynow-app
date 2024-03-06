@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import camera from '/icons/camera.svg';
 import { useProductsStore } from '~/stores/products';
+import { useStatusStore } from '~/stores/sectors';
 import { useRouter } from 'vue-router';
 
 const router = useRouter();
+
 const { addIndexedDBProduct } =  useProductsStore();
+const { validationIndexedDBsectors } = useStatusStore();
 
 const player: Ref<HTMLCanvasElement | undefined> = ref();
 const canvas: Ref<HTMLCanvasElement | undefined> = ref();
@@ -15,7 +18,7 @@ const openPlayer = ref<boolean>(true);
 const name = ref<string>('');
 const quantidade = ref<string>('');
 const valor = ref<number>();
-const link = ref<string>('');
+const sectors = ref<string>('');
 
 function back() {
   router.push({ name:"init" })
@@ -23,11 +26,11 @@ function back() {
 
 function onSubmit() {
   const product = {
-    name: name.value,
-    quantidade: quantidade.value,
-    valor: valor.value,
-    link: link.value, 
-    canvas: canvas.value?.toDataURL("image/png")
+    title: name.value,
+    amount: quantidade.value,
+    price: valor.value, 
+    sector: sectors.value,
+    image: canvas.value?.toDataURL("image/png")
   };
 
   addIndexedDBProduct(product);
@@ -51,7 +54,7 @@ function openCamera() {
 }
 
 function takePhoto() {
-  canvas.value?.getContext("2d")?.drawImage(player.value, 0, 0, 340, 250);
+  canvas.value?.getContext("2d")?.drawImage(player.value, 0, 0, 408, 300);
 
   canvas.value?.toDataURL("image/png");   
 
@@ -119,17 +122,22 @@ function takePhoto() {
        class="text-sm pb-2"
        for="link"
       >
-        Link:
+        Setor:
       </label>
 
-      <input 
+      <select
         class="input"
-        type="text" 
-        name="link" 
-        id="link"
-        placeholder="ex: www.buynow.com.br"
-        v-model="link"
-      />
+        v-model="sectors"
+      >
+        <option disabled value="">Escolha um setor</option>
+        <option 
+          class="capitalize"
+          v-for="check in validationIndexedDBsectors()" 
+          :key="check"
+        >
+          {{ check }}
+        </option>
+      </select>
 
       <button 
         v-if="cameraOn"
@@ -158,7 +166,7 @@ function takePhoto() {
           :src="camera"
           alt="câmera"
         />
-          Bater
+          Tirar foto
       </button>
 
       <canvas 

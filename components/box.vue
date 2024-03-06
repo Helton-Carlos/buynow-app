@@ -9,7 +9,7 @@ defineEmits<(e:'getRouter') => void>();
 
 <template>
  <div class="text-gray hover:text-purple" @click="$emit('getRouter')">
-    <div class="w-[105px] h-[105px] border-4 border-gray hover:border-purple">
+    <div class="w-[105px] h-[105px] border-4 border-gray hover:border-purple hover:bg-purple-light">
       <div class="min-h-[105px] flex justify-center items-center">
         <img 
           class="hover:text-purple"

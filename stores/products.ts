@@ -15,7 +15,7 @@ export const useProductsStore = defineStore('productsStore', {
         const request = indexedDB.open(dbName, dbVersion);
   
         request.onupgradeneeded = (event) => {
-          const db = event.target?.result;
+          const db : any = (event?.target as any)?.result;
   
           if (!db.objectStoreNames.contains('productsDB')) {
            db.createObjectStore('productsDB', { keyPath: 'id', autoIncrement: true });
@@ -23,11 +23,11 @@ export const useProductsStore = defineStore('productsStore', {
         };
 
         request.onsuccess = (event) => {
-          const db = event.target?.result;
+          const db : any = (event?.target as any)?.result;
   
           const transaction = db.transaction(['productsDB'], 'readwrite');
           const objectStore = transaction.objectStore('productsDB');
-          
+     
           this.products.push(products)
 
           objectStore.add(products);
@@ -35,6 +35,41 @@ export const useProductsStore = defineStore('productsStore', {
       } catch (error) {
           console.error('Erro: ' + error);
       }
+    },
+
+    getindexedDBProduct() {
+      const request = indexedDB.open('db-local-products');
+
+      request.onsuccess = (event) => {
+        const db : any = (event?.target as any)?.result;
+
+        try {
+          const transaction = db.transaction(['productsDB'], 'readonly');
+          const objectStore = transaction.objectStore('productsDB');
+          const cursorRequest = objectStore.openCursor();
+
+          cursorRequest.onsuccess = (event: { target: { result: any; }; }) => {
+            const result = event.target.result;
+          
+            if (result) {
+             return result.value
+            }
+          }
+        } catch(e) {
+          console.error(e)
+        }
+      }
+    },
+
+    getStorageProduct() {
+      const userLocal = localStorage?.getItem('products');
+      const product = userLocal ? JSON.parse(userLocal) : null;
+
+      return product;
+    },
+
+    validationIndexedDBProducts() {
+      return !localStorage.getItem('products') ? this.getindexedDBProduct() : this.getStorageProduct();
     },
   },
 });
