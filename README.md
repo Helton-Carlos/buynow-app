@@ -17,3 +17,12 @@ npm i
 ```bash
 npm run dev
 ```
+
+
+**👇 Referência:** 
+
+```bash
+https://whatpwacando.today/
+https://vite-pwa-org.netlify.app/
+https://developer.chrome.com/docs/workbox?hl=pt-br/
+```
