@@ -1,28 +1,28 @@
 <script setup lang="ts">
 import iconSearch from '/icons/search.svg';
-import geladeira from '/icons/geladeira.png';
 import { useStatusStore } from '~/stores/sectors';
+import { useProductsStore } from '~/stores/products';
 
-const { $state } = useStatusStore();
+const { validationIndexedDBsectors } = useStatusStore();
+const { validationIndexedDBProducts } = useProductsStore();
 
 const search = ref<string>('');
-const total = ref<string>('2,500.22');
 const sectors = ref<string>('');
+const total = ref<string>('3.000,22');
 
-const products = [
-  {
-    image: geladeira,
-    title: 'Geladeira Frost Free Brastemp',
-    sector: 'cozinha',
-    amount: 1
-  },
-  {
-    image: geladeira,
-    title: 'Geladeira Frost Free Brastemp',
-    sector: 'cozinha',
-    amount: 1
-  }
-]
+function getSearch() {
+  let title = validationIndexedDBProducts().map((item: { title: any; }) => item.title);
+
+  return title.filter((item: string) =>
+    item.toLowerCase().includes(search.value.toLowerCase()),
+  );
+}
+
+const getProducts = computed<any>(() => {
+  return getSearch().map((searchs: any) => {
+    return validationIndexedDBProducts().find((item: any) => item.title === searchs);
+  });
+});
 </script>
 
 <template>
@@ -43,7 +43,7 @@ const products = [
         v-model="search"
       />
     </div>
-
+    
     <div>  
       <select
         class="input"
@@ -52,7 +52,7 @@ const products = [
         <option disabled value="">Escolha um setor</option>
         <option 
           class="capitalize"
-          v-for="check in $state.sectors" 
+          v-for="check in validationIndexedDBsectors()" 
           :key="check"
         >
           {{ check }}
@@ -68,8 +68,9 @@ const products = [
       <p class="font-bold text-purple">
         $ {{ total }}
       </p>
+
       <card
-        v-for="(product, index) in products" 
+        v-for="(product, index) in getProducts" 
         :key="index"
         :image= "product.image"
         :title= "product.title"

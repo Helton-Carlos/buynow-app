@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import iconSearch from '/icons/search.svg';
-import geladeira from '/icons/geladeira.png';
 import { useStatusStore } from '~/stores/sectors';
 import { useProductsStore } from '~/stores/products';
 
@@ -9,6 +8,20 @@ const { validationIndexedDBProducts } = useProductsStore();
 
 const search = ref<string>('');
 const sectors = ref<string>('');
+
+function getSearch() {
+  let title = validationIndexedDBProducts().map((item: { title: any; }) => item.title);
+
+  return title.filter((item: string) =>
+    item.toLowerCase().includes(search.value.toLowerCase()),
+  );
+}
+
+const getProducts = computed<any>(() => {
+  return getSearch().map((searchs: any) => {
+    return validationIndexedDBProducts().find((item: any) => item.title === searchs);
+  });
+});
 </script>
 
 <template>
@@ -52,7 +65,7 @@ const sectors = ref<string>('');
 
     <div>
       <card
-        v-for="(product, index) in validationIndexedDBProducts()" 
+        v-for="(product, index) in getProducts" 
         :key="index"
         :image= "product.image"
         :title= "product.title"

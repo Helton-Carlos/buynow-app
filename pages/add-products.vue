@@ -15,7 +15,7 @@ const canvas: Ref<HTMLCanvasElement | undefined> = ref();
 const cameraOn = ref<boolean>(true);
 const openPlayer = ref<boolean>(true);
 
-const name = ref<string>('');
+const title = ref<string>('');
 const quantidade = ref<string>('');
 const valor = ref<number>();
 const sectors = ref<string>('');
@@ -26,7 +26,7 @@ function back() {
 
 function onSubmit() {
   const product = {
-    title: name.value,
+    title: title.value,
     amount: quantidade.value,
     price: valor.value, 
     sector: sectors.value,
@@ -83,7 +83,7 @@ function takePhoto() {
         name="nome" 
         id="nome"
         placeholder="ex: Geladeira"
-        v-model="name"
+        v-model="title"
       />
 
       <label
