@@ -11,12 +11,6 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 cleanupOutdatedCaches();
 
-const ignoreURLs = [/\.(?:css)$/]
-
-precacheAndRoute(self.__WB_MANIFEST, {
-  ignoreURLParametersMatching: ignoreURLs,
-});
-
 let allowlist: undefined | RegExp[]
 
 if (import.meta.env.DEV)
@@ -29,13 +23,13 @@ registerRoute(new NavigationRoute(
 
 registerRoute(({ url }) => {
   if (url.pathname === '/init') {
+    // Ignora arquivos CSS no precache apenas para a rota /init
     return {
       handle: createHandlerBoundToURL('/'),
-      url,
-      ignoreURLParametersMatching: ignoreURLs,
+      url
     };
   }
-
+  // Para outras rotas, trata como padrão
   return undefined;
 });
 
