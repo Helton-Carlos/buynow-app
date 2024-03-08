@@ -23,13 +23,15 @@ registerRoute(new NavigationRoute(
 
 registerRoute(({ url }) => {
   if (url.pathname === '/init') {
-    // Ignora arquivos CSS no precache apenas para a rota /init
     return {
       handle: createHandlerBoundToURL('/'),
       url
     };
   }
-  // Para outras rotas, trata como padrão
+  if (url.pathname.endsWith('.svg')) {
+    return null;
+  }
+
   return undefined;
 });
 
