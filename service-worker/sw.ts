@@ -21,19 +21,11 @@ registerRoute(new NavigationRoute(
   { allowlist },
 ))
 
-registerRoute(({ url }) => {
-  if (url.pathname === '/init') {
-    return {
-      handle: createHandlerBoundToURL('/'),
-      url
-    };
-  }
-  if (url.pathname.endsWith('.svg')) {
-    return null;
-  }
 
-  return undefined;
-});
+registerRoute( 
+  ({ url }) => url.pathname === '/init' || url.pathname === '/config',
+  ({ event }) => fetch(event.request)
+);
 
 self.skipWaiting();
 clientsClaim();
