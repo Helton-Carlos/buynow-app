@@ -11,6 +11,12 @@ precacheAndRoute(self.__WB_MANIFEST);
 
 cleanupOutdatedCaches();
 
+const ignoreURLs = [/\.(?:css)$/]
+
+precacheAndRoute(self.__WB_MANIFEST, {
+  ignoreURLParametersMatching: ignoreURLs,
+});
+
 let allowlist: undefined | RegExp[]
 
 if (import.meta.env.DEV)
@@ -20,6 +26,18 @@ registerRoute(new NavigationRoute(
   createHandlerBoundToURL('/'),
   { allowlist },
 ))
+
+registerRoute(({ url }) => {
+  if (url.pathname === '/init') {
+    return {
+      handle: createHandlerBoundToURL('/'),
+      url,
+      ignoreURLParametersMatching: ignoreURLs,
+    };
+  }
+
+  return undefined;
+});
 
 self.skipWaiting();
 clientsClaim();
