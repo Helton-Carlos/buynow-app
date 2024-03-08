@@ -1,5 +1,5 @@
 import { defineNuxtConfig } from 'nuxt/config'
-const sw = process.env.SW === 'true';
+const sw = true;
 
 export default defineNuxtConfig({
   app: {
