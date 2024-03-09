@@ -41,9 +41,9 @@ export default defineNuxtConfig({
     logLevel: 'info',
   },
   pwa: {
-    strategies: sw ? 'injectManifest' : 'generateSW',
-    srcDir: sw ? 'service-worker' : undefined,
-    filename: sw ? 'sw.ts' : undefined,
+    strategies:'injectManifest',
+    srcDir:'service-worker',
+    filename:'sw.ts',
     registerType: 'autoUpdate',
     manifest: {
       name: 'BUYNOW',

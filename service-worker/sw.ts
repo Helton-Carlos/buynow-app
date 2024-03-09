@@ -13,14 +13,10 @@ cleanupOutdatedCaches();
 
 let allowlist: undefined | RegExp[]
 
-if (import.meta.env.DEV)
-  allowlist = [/^\/$/]
-
 registerRoute(new NavigationRoute(
   createHandlerBoundToURL('/'),
   { allowlist },
 ))
-
 
 registerRoute( 
   ({ url }) => url.pathname === '/init' || url.pathname === '/config',
