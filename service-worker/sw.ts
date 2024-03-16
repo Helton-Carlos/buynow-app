@@ -20,27 +20,33 @@ declare global {
 
 cleanupOutdatedCaches();
 
+self.addEventListener('install', (event) => {
+  console.log('Service worker installed');
+});
+
+self.addEventListener('activate', (event) => {
+  console.log('Service worker activated');
+});
+
+
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) && url.pathname.includes('init'),
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) && url.pathname.includes('/init'),
   new CacheFirst({
-    cacheName: 'css-html-init',
+    cacheName: 'init',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
+      new ExpirationPlugin({ maxEntries: 50 }),
     ],
   })
 );
-
 
 registerRoute(
   ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) && !url.pathname.includes('init'),
   new CacheFirst({
-    cacheName: 'js-css-html-png-geral',
+    cacheName: 'full',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
+      new ExpirationPlugin({ maxEntries: 50 }),
     ],
   })
-);
-
 
 self.skipWaiting();
 clientsClaim();
