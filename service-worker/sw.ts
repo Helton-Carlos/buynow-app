@@ -32,17 +32,7 @@ if ('serviceWorker' in navigator) {
 }
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.html') && url.pathname.includes('/init'),
-  new CacheFirst({
-    cacheName: 'init',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 50 }),
-    ],
-  })
-);
-
-registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.html')) && url.pathname.includes('config'),
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.html')) && url.pathname.includes('init'),
   new CacheFirst({
     cacheName: 'config',
     plugins: [
@@ -52,7 +42,17 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) 
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.html')) && url.pathname.includes('config'),
+  new CacheFirst({
+    cacheName: 'config',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 50 }),
+    ],
+  })
+);
+
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) 
   && !url.pathname.includes('init') && !url.pathname.includes('config'),
   new CacheFirst({
     cacheName: 'full',
