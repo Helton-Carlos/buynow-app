@@ -20,38 +20,26 @@ declare global {
 
 cleanupOutdatedCaches();
 
-let allowlist: undefined | RegExp[]
-
-registerRoute(new NavigationRoute(
-  createHandlerBoundToURL('/'),
-  { allowlist },
-))
-
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.css'), 
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) && url.pathname.includes('init'),
   new StaleWhileRevalidate({
-    cacheName: 'css-teste',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 50 }),
-    ],
-  })
-)
-
-registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png') && url.pathname.includes('init'),
-  new StaleWhileRevalidate({
-    cacheName: 'images-init',
+    cacheName: 'css-html-teste',
     plugins: [
       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
     ],
   })
 );
 
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting()
-  }
-})
+
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) && !url.pathname.includes('init'),
+  new StaleWhileRevalidate({
+    cacheName: 'js-css-html-png-teste',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
+    ],
+  })
+);
 
 self.skipWaiting();
 clientsClaim();

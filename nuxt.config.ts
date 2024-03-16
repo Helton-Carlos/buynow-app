@@ -79,9 +79,6 @@ export default defineNuxtConfig({
         },
       ],
     },
-    injectManifest: {
-      globPatterns: ['**/*.{js,css,html}'],
-    },
     client: {
       installPrompt: true,
       periodicSyncForUpdates: 20,
