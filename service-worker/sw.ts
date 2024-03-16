@@ -3,8 +3,8 @@
 
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
-import { NavigationRoute, registerRoute } from 'workbox-routing'
-import { StaleWhileRevalidate } from 'workbox-strategies'
+import { registerRoute } from 'workbox-routing'
+import {CacheFirst  } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 
 declare let self: ServiceWorkerGlobalScope
@@ -22,8 +22,8 @@ cleanupOutdatedCaches();
 
 registerRoute(
   ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) && url.pathname.includes('init'),
-  new StaleWhileRevalidate({
-    cacheName: 'css-html-teste',
+  new CacheFirst({
+    cacheName: 'css-html-init',
     plugins: [
       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
     ],
@@ -33,13 +33,14 @@ registerRoute(
 
 registerRoute(
   ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) && !url.pathname.includes('init'),
-  new StaleWhileRevalidate({
-    cacheName: 'js-css-html-png-teste',
+  new CacheFirst({
+    cacheName: 'js-css-html-png-geral',
     plugins: [
       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 120 }),
     ],
   })
 );
+
 
 self.skipWaiting();
 clientsClaim();
