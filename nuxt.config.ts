@@ -80,7 +80,7 @@ export default defineNuxtConfig({
       ],
     },
     injectManifest: {
-      globPatterns: ['**/*.{js,css,html}'],
+      globPatterns: [''],
     },
     client: {
       installPrompt: true,

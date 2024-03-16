@@ -42,7 +42,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) && url.pathname.includes('config'),
+  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.js') || url.pathname.endsWith('.html')) && url.pathname.includes('config'),
   new CacheFirst({
     cacheName: 'config',
     plugins: [
