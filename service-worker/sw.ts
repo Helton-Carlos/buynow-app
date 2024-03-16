@@ -21,6 +21,16 @@ self.addEventListener('activate', (event) => {
   console.log('Service worker activated');
 });
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/seu-arquivo-service-worker.js')
+    .then(registration => {
+      console.log('Service Worker registrado com sucesso:', registration);
+    })
+    .catch(error => {
+      console.error('Erro ao registrar o Service Worker:', error);
+    });
+}
+
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.html') && url.pathname.includes('/init'),
   new CacheFirst({
