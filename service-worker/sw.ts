@@ -1,27 +1,56 @@
-/// <reference lib="WebWorker" />
-/// <reference types="vite/client" />
-
-import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
-import { NavigationRoute, registerRoute } from 'workbox-routing'
+import { ExpirationPlugin } from 'workbox-expiration'
+import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching'
+import { registerRoute } from 'workbox-routing'
+import { StaleWhileRevalidate } from 'workbox-strategies'
 
-declare let self: ServiceWorkerGlobalScope
+clientsClaim()
+declare global {
+  interface Window {
+    INJECT_MANIFEST_PLUGIN: { url: string; revision: string }[]
+    skipWaiting: Function
+  }
+}
 
-precacheAndRoute(self.__WB_MANIFEST);
+// Add all assets generated during build to the browser cache.
+precacheAndRoute(self.INJECT_MANIFEST_PLUGIN)
 
-cleanupOutdatedCaches();
+const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$')
+registerRoute(
+  // Return false to exempt requests from being fulfilled by index.html.
+  ({ request, url }) => {
+    // If this isn't a navigation, skip.
+    if (request.mode !== 'navigate') {
+      return false
+    } // If this is a URL that starts with /_, skip.
 
-let allowlist: undefined | RegExp[]
+    if (url.pathname.startsWith('/_')) {
+      return false
+    } // If this looks like a URL for a resource, because it contains // a file extension, skip.
 
-registerRoute(new NavigationRoute(
-  createHandlerBoundToURL('/'),
-  { allowlist },
-))
+    if (url.pathname.match(fileExtensionRegexp)) {
+      return false
+    } // Return true to signal that we want to use the handler.
 
-registerRoute( 
-  ({ url }) => url.pathname === '/init' || url.pathname === '/config',
-  ({ event }) => fetch(event.request)
-);
+    return true
+  },
+  createHandlerBoundToURL('/index.html')
+)
 
-self.skipWaiting();
-clientsClaim();
+// An example runtime caching route for requests that aren't handled by the
+// precache, in this case same-origin .png requests like those from in public/
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'), // Customize this strategy as 
+  new StaleWhileRevalidate({
+    cacheName: 'images-teste',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 50 }),
+    ],
+  })
+)
+
+self.addEventListener('message', (event) => {
+  if (event.data && event.data.type === 'SKIP_WAITING') {
+    self.skipWaiting()
+  }
+})

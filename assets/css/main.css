@@ -12,6 +12,7 @@ html {
 
 .btn-primary {
   @apply w-full mt-2 flex justify-center bg-purple text-white gap-2 px-2 py-3 rounded-full
+    hover:bg-purple-light hover:text-black
 }
 
 .btn-negative {

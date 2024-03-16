@@ -1,14 +1,14 @@
 <script setup lang="ts">
 import { useRouter } from 'vue-router';
-import { onMounted } from 'vue'
+import { onMounted } from 'vue';
 
 const router = useRouter();
 
-onMounted(()=>{
+onMounted(() => {
   setTimeout(() => {
-    router.push({ name: 'init'})
+    router.push({ name: 'config' });
   }, 5000);
-})
+});
 </script>
 
 <template>
@@ -19,8 +19,8 @@ onMounted(()=>{
       </h1>
 
       <p class="text-xl">
-        Organize suas comprinhas com os 
-        <br/>produtinhos para sua casa.  
+        Organize suas comprinhas com os
+        <br />produtinhos para sua casa.
       </p>
     </div>
   </div>
