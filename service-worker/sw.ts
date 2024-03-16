@@ -11,13 +11,6 @@ declare let self: ServiceWorkerGlobalScope
 
 precacheAndRoute(self.__WB_MANIFEST);
 
-declare global {
-  interface Window {
-    INJECT_MANIFEST_PLUGIN: { url: string; revision: string }[]
-    skipWaiting: Function
-  }
-}
-
 cleanupOutdatedCaches();
 
 self.addEventListener('install', (event) => {
@@ -28,9 +21,8 @@ self.addEventListener('activate', (event) => {
   console.log('Service worker activated');
 });
 
-
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html')) && url.pathname.includes('/init'),
+  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.html') && url.pathname.includes('/init'),
   new CacheFirst({
     cacheName: 'init',
     plugins: [
@@ -47,6 +39,7 @@ registerRoute(
       new ExpirationPlugin({ maxEntries: 50 }),
     ],
   })
-
+);
+  
 self.skipWaiting();
 clientsClaim();
