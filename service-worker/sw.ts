@@ -18,19 +18,14 @@ self.addEventListener('install', (event) => {
 });
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('products'),
+  ({ url }) => {
+    return (
+      url.origin === self.location.origin &&
+      (url.pathname.includes('products') || url.pathname.includes('approve.svg'))
+    );
+  },
   new CacheFirst({
-    cacheName: 'products-image',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 })
-    ],
-  })
-);
-
-registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('approve.svg'),
-  new CacheFirst({
-    cacheName: 'approve-image',
+    cacheName: 'products-approve-image',
     plugins: [
       new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
     ],
@@ -43,23 +38,20 @@ registerRoute(
     cacheName: 'config-image',
     plugins: [
       new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
-      {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && response.headers.get('content-type')?.includes('text/css')) {
-            return null; 
-          }
-          return response;
-        },
-      },
     ],
   })
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('buynow-app.vercel.app/approve'),
+  ({ url }) => {
+    return (
+      url.origin === self.location.origin &&
+      url.pathname.includes('buynow-app.vercel.app/approve') &&
+      !url.pathname.endsWith('.css')
+    );
+  },
   new NetworkOnly()
 );
-
 
 self.skipWaiting();
 clientsClaim();
