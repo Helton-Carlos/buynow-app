@@ -34,7 +34,7 @@ if ('serviceWorker' in navigator) {
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.includes('config'),
   new CacheFirst({
-    cacheName: 'config',
+    cacheName: 'config-css-remove',
     plugins: [
       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 3600 }),
       {
@@ -52,7 +52,7 @@ registerRoute(
 registerRoute(
   ({ url }) => url.pathname.includes('init'),
   new CacheFirst({
-    cacheName: 'init',
+    cacheName: 'init-image-remove',
     plugins: [
       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
       {
@@ -66,6 +66,25 @@ registerRoute(
     ],
   })
 );
+
+registerRoute(
+  ({url}) =>  url.pathname.startsWith('/approve'),
+  new CacheFirst({
+    cacheName: 'approve-css-remove',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
+      {
+        cacheWillUpdate: async ({ response }) => {
+          if (response && response.headers.get('content-type')?.includes('text/css')) {
+            return null; // Não armazenar arquivos CSS em cache
+          }
+          return response;
+        },
+      },
+    ],
+  })
+);
+
   
 self.skipWaiting();
 clientsClaim();
