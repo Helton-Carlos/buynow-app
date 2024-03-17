@@ -4,7 +4,7 @@
 import { cleanupOutdatedCaches, createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching'
 import { clientsClaim } from 'workbox-core'
 import { registerRoute } from 'workbox-routing'
-import {CacheFirst  } from 'workbox-strategies'
+import { CacheFirst, NetworkOnly } from 'workbox-strategies'
 import { ExpirationPlugin } from 'workbox-expiration'
 
 declare let self: ServiceWorkerGlobalScope
@@ -17,14 +17,20 @@ self.addEventListener('install', (event) => {
   console.log('Service worker installed');
 });
 
-self.addEventListener('activate', (event) => {
-  console.log('Service worker activated');
-});
+registerRoute(
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('products'),
+  new CacheFirst({
+    cacheName: 'products-image',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 })
+    ],
+  })
+);
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('search'),
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('approve.svg'),
   new CacheFirst({
-    cacheName: 'search-image',
+    cacheName: 'approve-image',
     plugins: [
       new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
     ],
@@ -50,22 +56,10 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('products-registered'),
-  new CacheFirst({
-    cacheName: 'products-registered-remove-css',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
-      {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && response.headers.get('content-type')?.includes('text/css')) {
-            return null; 
-          }
-          return response;
-        },
-      },
-    ],
-  })
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('buynow-app.vercel.app/approve'),
+  new NetworkOnly()
 );
+
 
 self.skipWaiting();
 clientsClaim();
