@@ -21,16 +21,6 @@ self.addEventListener('activate', (event) => {
   console.log('Service worker activated');
 });
 
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('/seu-arquivo-service-worker.js')
-    .then(registration => {
-      console.log('Service Worker registrado com sucesso:', registration);
-    })
-    .catch(error => {
-      console.error('Erro ao registrar o Service Worker:', error);
-    });
-}
-
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.includes('config'),
   new CacheFirst({
@@ -55,14 +45,13 @@ registerRoute(
     const router = url.pathname === '/init';
     return image || router;
   },  
-  
   new CacheFirst({
     cacheName: 'init-remove-image',
     plugins: [
       new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
       {
         async cacheWillUpdate({ response }) {
-          if (response && (response.headers.get('content-type')?.startsWith('image/') || response.headers.get('content-type')?.includes('application/pdf'))) {
+          if (response && (response.headers.get('content-type')?.startsWith('image/'))) {
             return null;
           }
           return response;
@@ -80,13 +69,13 @@ registerRoute(
   },  
   
   new CacheFirst({
-    cacheName: 'init-remove-css',
+    cacheName: 'approve-remove-search-svg',
     plugins: [
       new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
       {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && response.headers.get('content-type')?.includes('text/css')) {
-            return null; 
+        async cacheWillUpdate({ request, response }) {
+          if (request.url.includes('search.svg')) {
+            return null;
           }
           return response;
         },
@@ -94,7 +83,6 @@ registerRoute(
     ],
   })
 );
-
   
 self.skipWaiting();
 clientsClaim();
