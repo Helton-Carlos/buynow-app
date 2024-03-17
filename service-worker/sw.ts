@@ -22,7 +22,7 @@ self.addEventListener('activate', (event) => {
 });
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('config') ||  url.pathname.includes('search') ,
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('config') &&  url.pathname.includes('search') ,
   new CacheFirst({
     cacheName: 'config-and-search-image',
     plugins: [
