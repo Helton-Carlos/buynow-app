@@ -34,7 +34,7 @@ if ('serviceWorker' in navigator) {
 registerRoute(
   ({ url }) => url.origin === self.location.origin && url.pathname.includes('config'),
   new CacheFirst({
-    cacheName: 'config-css-remove',
+    cacheName: 'config-remove-css',
     plugins: [
       new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
       {
@@ -51,37 +51,50 @@ registerRoute(
 
 registerRoute(
   ({ url }) => {
-    const image = url.origin === self.location.origin && url.pathname.endsWith('.png');
+    const image = url.origin === self.location.origin;
     const router = url.pathname === '/init';
     return image || router;
   },  
   
   new CacheFirst({
-    cacheName: 'init-image-remove',
+    cacheName: 'init-remove-image',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 })
-      //new ExpirationPlugin({ maxAgeSeconds: 120 })
+      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
+      {
+        async cacheWillUpdate({ response }) {
+          if (response && (response.headers.get('content-type')?.startsWith('image/') || response.headers.get('content-type')?.includes('application/pdf'))) {
+            return null;
+          }
+          return response;
+        },
+      },
     ],
   })
 );
 
-// registerRoute(
-//   ({ url }) => url.pathname.includes('init'),
-//   new CacheFirst({
-//     cacheName: 'init-image-remove',
-//     plugins: [
-//       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
-//       {
-//         cacheWillUpdate: async ({ response }) => {
-//           if (response && (response.headers.get('content-type')?.includes('image/svg+xml') || response.headers.get('content-type')?.includes('image/png'))) {
-//             return null; 
-//           }
-//           return response;
-//         },
-//       },
-//     ],
-//   })
-// );
+registerRoute(
+  ({ url }) => {
+    const image = url.origin === self.location.origin;
+    const router = url.pathname === '/approve';
+    return image || router;
+  },  
+  
+  new CacheFirst({
+    cacheName: 'init-remove-css',
+    plugins: [
+      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
+      {
+        cacheWillUpdate: async ({ response }) => {
+          if (response && response.headers.get('content-type')?.includes('text/css')) {
+            return null; 
+          }
+          return response;
+        },
+      },
+    ],
+  })
+);
+
   
 self.skipWaiting();
 clientsClaim();
