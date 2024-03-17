@@ -50,7 +50,7 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('init'),
+  ({ url }) => url.pathname.includes('init'),
   new CacheFirst({
     cacheName: 'init',
     plugins: [
