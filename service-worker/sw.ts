@@ -22,67 +22,14 @@ self.addEventListener('activate', (event) => {
 });
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && url.pathname.includes('config'),
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('config') ||  url.pathname.includes('search') ,
   new CacheFirst({
-    cacheName: 'config-remove-css',
+    cacheName: 'config-and-search-image',
     plugins: [
       new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
-      {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && response.headers.get('content-type')?.includes('text/css')) {
-            return null; 
-          }
-          return response;
-        },
-      },
     ],
   })
 );
 
-registerRoute(
-  ({ url }) => {
-    const image = url.origin === self.location.origin;
-    const router = url.pathname === '/init';
-    return image || router;
-  },  
-  new CacheFirst({
-    cacheName: 'init-remove-image',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
-      {
-        async cacheWillUpdate({ response }) {
-          if (response && (response.headers.get('content-type')?.startsWith('image/'))) {
-            return null;
-          }
-          return response;
-        },
-      },
-    ],
-  })
-);
-
-registerRoute(
-  ({ url }) => {
-    const image = url.origin === self.location.origin;
-    const router = url.pathname === '/approve';
-    return image || router;
-  },  
-  
-  new CacheFirst({
-    cacheName: 'approve-remove-search-svg',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 }),
-      {
-        async cacheWillUpdate({ request, response }) {
-          if (request.url.includes('search.svg')) {
-            return null;
-          }
-          return response;
-        },
-      },
-    ],
-  })
-);
-  
 self.skipWaiting();
 clientsClaim();
