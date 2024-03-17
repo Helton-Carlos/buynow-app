@@ -32,32 +32,37 @@ if ('serviceWorker' in navigator) {
 }
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.html')) && url.pathname.includes('init'),
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('config'),
   new CacheFirst({
     cacheName: 'config',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50 }),
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 3600 }),
+      {
+        cacheWillUpdate: async ({ response }) => {
+          if (response && response.headers.get('content-type')?.includes('text/css')) {
+            return null; 
+          }
+          return response;
+        },
+      },
     ],
   })
 );
 
 registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.html')) && url.pathname.includes('config'),
+  ({ url }) => url.origin === self.location.origin && url.pathname.includes('init'),
   new CacheFirst({
-    cacheName: 'config',
+    cacheName: 'init',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50 }),
-    ],
-  })
-);
-
-registerRoute(
-  ({ url }) => url.origin === self.location.origin && (url.pathname.endsWith('.css') || url.pathname.endsWith('.html') || url.pathname.endsWith('.png')) 
-  && !url.pathname.includes('init') && !url.pathname.includes('config'),
-  new CacheFirst({
-    cacheName: 'full',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 50 }),
+      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
+      {
+        cacheWillUpdate: async ({ response }) => {
+          if (response && (response.headers.get('content-type')?.includes('image/svg+xml') || response.headers.get('content-type')?.includes('image/png'))) {
+            return null; 
+          }
+          return response;
+        },
+      },
     ],
   })
 );
