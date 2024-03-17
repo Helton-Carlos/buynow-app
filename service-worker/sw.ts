@@ -36,7 +36,7 @@ registerRoute(
   new CacheFirst({
     cacheName: 'config-css-remove',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 3600 }),
+      new ExpirationPlugin({ maxEntries: 120, maxAgeSeconds: 3600 }),
       {
         cacheWillUpdate: async ({ response }) => {
           if (response && response.headers.get('content-type')?.includes('text/css')) {
@@ -50,41 +50,38 @@ registerRoute(
 );
 
 registerRoute(
-  ({ url }) => url.pathname.includes('init'),
+  ({ url }) => {
+    const image = url.origin === self.location.origin && url.pathname.endsWith('.png');
+    const router = url.pathname === '/init';
+    return image || router;
+  },  
+  
   new CacheFirst({
     cacheName: 'init-image-remove',
     plugins: [
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
-      {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && (response.headers.get('content-type')?.includes('image/svg+xml') || response.headers.get('content-type')?.includes('image/png'))) {
-            return null; 
-          }
-          return response;
-        },
-      },
+      new ExpirationPlugin({ maxEntries: 24 * 60 * 60 })
+      //new ExpirationPlugin({ maxAgeSeconds: 120 })
     ],
   })
 );
 
-registerRoute(
-  ({url}) =>  url.pathname.startsWith('/approve'),
-  new CacheFirst({
-    cacheName: 'approve-css-remove',
-    plugins: [
-      new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
-      {
-        cacheWillUpdate: async ({ response }) => {
-          if (response && response.headers.get('content-type')?.includes('text/css')) {
-            return null; // Não armazenar arquivos CSS em cache
-          }
-          return response;
-        },
-      },
-    ],
-  })
-);
-
+// registerRoute(
+//   ({ url }) => url.pathname.includes('init'),
+//   new CacheFirst({
+//     cacheName: 'init-image-remove',
+//     plugins: [
+//       new ExpirationPlugin({ maxEntries: 50, maxAgeSeconds: 86400 }), 
+//       {
+//         cacheWillUpdate: async ({ response }) => {
+//           if (response && (response.headers.get('content-type')?.includes('image/svg+xml') || response.headers.get('content-type')?.includes('image/png'))) {
+//             return null; 
+//           }
+//           return response;
+//         },
+//       },
+//     ],
+//   })
+// );
   
 self.skipWaiting();
 clientsClaim();
