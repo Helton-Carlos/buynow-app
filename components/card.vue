@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { convertMoney } from '~/utils/convertMoney';
+
 defineProps<{
   image: string;
   title: string;
@@ -27,8 +29,15 @@ defineEmits<(e: 'getProduct') => void>();
       </p>
 
       <div>
-        <span class="text-sm">Setor: </span>
-        <span class="text-sm capitalize">{{ sector }}</span>
+        <div>
+          <span class="text-sm">Setor: </span>
+          <span class="text-sm capitalize">{{ sector }}</span>
+        </div>
+
+        <div>
+          <span class="text-sm">Valor: </span>
+          <span class="text-sm capitalize">{{ convertMoney(price) }}</span>
+        </div>
       </div>
     </div>
 

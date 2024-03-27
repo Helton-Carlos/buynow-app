@@ -6,6 +6,12 @@ html {
   font-family: 'Urbanist', sans-serif; 
 }
 
+p, span {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+
 .input {
   @apply w-full bg-gray-light px-1 py-2 my-2 rounded-md shadow border-none outline-none;
 }
