@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import camera from '/icons/camera.svg';
-import { convertMoney } from '~/utils/convertMoney';
 import { useProductsStore } from '~/stores/products';
 import { useStatusStore } from '~/stores/sectors';
 import { useRouter } from 'vue-router';
@@ -88,7 +87,7 @@ function takePhoto() {
         name="quantidade"
         id="quantidade"
         placeholder="ex: 2"
-        :v-model="convertMoney(quantidade)"
+        v-model="quantidade"
       />
 
       <label class="text-sm pb-2" for="valor"> Valor: </label>
