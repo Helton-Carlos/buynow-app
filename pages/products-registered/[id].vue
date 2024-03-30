@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { useRouter, useRoute } from 'vue-router';
+import { convertMoney } from '~/utils/convertMoney';
+
 const { validationIndexedDBProducts } = useProductsStore();
 
 const router = useRouter();
@@ -23,7 +25,7 @@ getProduct();
 </script>
 
 <template>
-  <div class="mx-auto">
+  <div class="mx-auto m-2">
     <div class="mt-4 flex items-center justify-between">
       <div>
         <h2 class="text-2xl font-semibold capitalize px-2">
@@ -43,7 +45,7 @@ getProduct();
 
         <p class="font-semibold capitalize px-2">
           <span class="text-purple">Valor:</span>
-          {{ getProduct().price }}
+          {{ convertMoney(getProduct().price) }}
         </p>
       </div>
 
