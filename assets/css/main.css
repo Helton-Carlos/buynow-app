@@ -21,9 +21,9 @@ p, span {
     hover:bg-purple-light hover:text-black
 }
 
-.btn-negative {
+.btn-standard{
   @apply w-full mt-2 flex justify-center bg-gray-light text-purple gap-2 px-1 py-2 rounded-full
-    hover:bg-gray hover:text-white
+    hover:bg-gray hover:text-purple
 }
 
 .btn-positive {

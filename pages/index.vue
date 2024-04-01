@@ -19,8 +19,8 @@ onMounted(() => {
       </h1>
 
       <p class="text-xl">
-        Organize suas comprinhas com os
-        <br />produtinhos para sua casa.
+        Organize suas compras com os
+        <br />produtos para sua casa.
       </p>
     </div>
   </div>

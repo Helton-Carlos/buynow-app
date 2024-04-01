@@ -1,15 +1,15 @@
 <script setup lang="ts">
 import { useStatusStore } from '~/stores/sectors';
 
-const add = ref<string[]>([]);
+const add = ref<string>('');
 const note = ref<boolean>(false);
 
-const { $state, addIndexedDBSectors } = useStatusStore();
+const { addStorageSectors, $state } = useStatusStore();
 
 function addSectors() {
   if (add.value.length) {
-    addIndexedDBSectors(add.value);
-    add.value = [];
+    addStorageSectors(add.value);
+    add.value = '';
   } else {
     note.value = true;
     setTimeout(() => {
@@ -42,13 +42,23 @@ function nextPage() {
         </p>
       </div>
 
-      <button class="btn-primary font-bold">+ Adicionar</button>
+      <button class="btn-positive font-bold">Adicionar +</button>
     </form>
 
     <div class="flex items-center" v-for="check in $state.sectors" :key="check">
       <p class="pl-1 font-bold capitalize" :for="check">- {{ check }}</p>
     </div>
 
-    <button class="btn-primary font-bold" @click="nextPage">Avançar</button>
+    <button class="btn-standard flex items-center font-bold" @click="nextPage">
+      <span>
+        Avançar
+      </span> 
+
+      <img 
+       class="h-[15px]"  
+       src="../public/icons/arrow-next.svg" 
+       alt="avançar" 
+       />
+    </button>
   </div>
 </template>

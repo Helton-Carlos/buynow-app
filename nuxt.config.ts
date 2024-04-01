@@ -1,5 +1,4 @@
-import { defineNuxtConfig } from 'nuxt/config'
-const sw = true;
+import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
   app: {

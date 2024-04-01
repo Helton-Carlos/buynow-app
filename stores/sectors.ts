@@ -7,6 +7,17 @@ export const useStatusStore = defineStore('sectors', {
   }),
 
   actions: {
+    getStorageSectors() {
+      const userLocal = localStorage?.getItem('sectors');
+      const sectors =  userLocal ? JSON.parse(userLocal) : null
+  
+      return sectors;
+    },
+
+    addStorageSectors(sector: string) {
+      this.sectors.push(sector);   
+    },
+
     async addIndexedDBSectors(sectors: string[]) {
       try {
         const dbName = 'db-local-sectors';
@@ -59,13 +70,6 @@ export const useStatusStore = defineStore('sectors', {
           console.error(e)
         }
       }
-    },
-
-    getStorageSectors() {
-      const userLocal = localStorage?.getItem('sectors');
-      const sectors =  userLocal ? JSON.parse(userLocal) : null
-
-      return sectors;
     },
 
     validationIndexedDBsectors() {
