@@ -30,5 +30,7 @@ https://vite-pwa-org.netlify.app/
 ```bash
 https://developer.chrome.com/docs/workbox?hl=pt-br/
 ```
-<img width="430" alt="BUY-NOW" src="https://github.com/Helton-Carlos/buynow-app/assets/89320183/ee23fede-7b7b-45fc-bcea-97c8d5cd3234">
+
+![home-screen](https://github.com/Helton-Carlos/buynow-app/assets/89320183/8ff15ee2-0f19-460d-ac5e-55336ea05d7a)
+
 
