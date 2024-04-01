@@ -10,7 +10,8 @@ const search = ref<string>('');
 const sectors = ref<string>('');
 
 function getSearch() {
-  let title = validationIndexedDBProducts().map(
+  let title = validationIndexedDBProducts()
+  .map(
     (item: { title: any }) => item.title,
   );
 
@@ -24,12 +25,21 @@ function pageProducts(title: string) {
 }
 
 const getProducts = computed<any>(() => {
+  if(sectors.value) return getsectors.value;
+
   return getSearch().map((searchs: any) => {
     return validationIndexedDBProducts().find(
       (item: any) => item.title === searchs,
     );
   });
 });
+
+const getsectors = computed<any>(() => {
+  return validationIndexedDBProducts()
+    .filter( (item: any) => item.sector === sectors.value);
+});
+
+watch(sectors, getsectors.value)
 </script>
 
 <template>
