@@ -29,9 +29,6 @@ export default defineNuxtConfig({
         target: 'esnext',
       },
     },
-    prerender: {
-      routes: ['/', '/init', '/config', '/products-registered', '/approve'],
-    },
   },
   imports: {
     autoImport: true,
