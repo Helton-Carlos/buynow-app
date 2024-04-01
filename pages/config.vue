@@ -9,9 +9,11 @@ const { addStorageSectors, $state } = useStatusStore();
 function addSectors() {
   if (add.value.length) {
     addStorageSectors(add.value);
+
     add.value = '';
   } else {
     note.value = true;
+
     setTimeout(() => {
       note.value = false;
     }, 2500);
@@ -19,7 +21,7 @@ function addSectors() {
 }
 
 function nextPage() {
-  navigateTo('add-products');
+  navigateTo('init');
 }
 </script>
 
@@ -58,7 +60,7 @@ function nextPage() {
        class="h-[15px]"  
        src="../public/icons/arrow-next.svg" 
        alt="avançar" 
-       />
+      />
     </button>
   </div>
 </template>

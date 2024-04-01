@@ -2,10 +2,6 @@
 import iconSearch from '/icons/search.svg';
 import { useStatusStore } from '~/stores/sectors';
 import { useProductsStore } from '~/stores/products';
-import { useRouter, useRoute } from 'vue-router';
-
-const router = useRouter();
-const route = useRoute();
 
 const { validationIndexedDBsectors } = useStatusStore();
 const { validationIndexedDBProducts } = useProductsStore();

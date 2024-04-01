@@ -1,6 +1,9 @@
 import { defineNuxtConfig } from 'nuxt/config';
 
 export default defineNuxtConfig({
+  devServer: {
+    port: 8000
+  },
   app: {
     head: {
       htmlAttrs: { dir: 'ltr', lang: 'pt' },
