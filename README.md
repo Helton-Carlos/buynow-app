@@ -23,6 +23,10 @@ npm run dev
 
 ```bash
 https://whatpwacando.today/
+```
+```bash
 https://vite-pwa-org.netlify.app/
+```
+```bash
 https://developer.chrome.com/docs/workbox?hl=pt-br/
 ```
